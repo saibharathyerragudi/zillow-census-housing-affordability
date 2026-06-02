@@ -1,0 +1,13 @@
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Raw downloads can be refreshed by scripts/build_dataset.py
+data/raw/*.csv
+data/raw/*.json
+data/raw/*.zip
+
+# Streamlit local state
+.streamlit/secrets.toml
