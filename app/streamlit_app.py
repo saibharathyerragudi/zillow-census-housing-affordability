@@ -76,6 +76,19 @@ def metric_card(label: str, value: str, detail: str, tone: str = ACCENT) -> None
     )
 
 
+def quality_card(label: str, value: str, detail: str) -> None:
+    st.markdown(
+        f"""
+        <div class="quality-card">
+          <span>{label}</span>
+          <strong>{value}</strong>
+          <small>{detail}</small>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def section_label(text: str) -> None:
     st.markdown(f'<div class="section-label">{text}</div>', unsafe_allow_html=True)
 
@@ -184,6 +197,34 @@ st.markdown(
       .metric-card small {
         color: #d2d6de;
         font-size: 0.88rem;
+        font-weight: 650;
+      }
+      .quality-card {
+        border: 1px solid var(--line);
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 16px 18px;
+        min-height: 102px;
+      }
+      .quality-card span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .quality-card strong {
+        display: block;
+        color: var(--text);
+        font-size: 1.25rem;
+        line-height: 1.1;
+        margin-bottom: 8px;
+      }
+      .quality-card small {
+        color: var(--muted);
+        font-size: 0.86rem;
         font-weight: 650;
       }
       .section-label {
@@ -368,8 +409,8 @@ with right:
             y=focus_history["zhvi"],
             mode="lines+markers",
             name="ZHVI",
-        line=dict(color="#2c7fb8", width=3.2),
-        marker=dict(size=7),
+            line=dict(color="#2c7fb8", width=3.2),
+            marker=dict(size=7),
             yaxis="y1",
         )
     )
@@ -379,8 +420,8 @@ with right:
             y=focus_history["median_household_income"],
             mode="lines+markers",
             name="Income",
-        line=dict(color="#22a06b", width=2.8),
-        marker=dict(size=6),
+            line=dict(color="#22a06b", width=2.8),
+            marker=dict(size=6),
             yaxis="y2",
         )
     )
@@ -456,6 +497,15 @@ with s2:
         yaxis=dict(gridcolor=GRID),
     )
     st.plotly_chart(band_fig, use_container_width=True)
+
+section_label("Data Quality")
+q1, q2, q3 = st.columns(3)
+with q1:
+    quality_card("Source coverage", f"{affordability['metro'].nunique():,} metros", "Zillow ZHVI metro panel joined to income estimates.")
+with q2:
+    quality_card("Freshness", f"{first_year}-{latest_year}", "Annual grain used for trend comparison and ranking.")
+with q3:
+    quality_card("Income source", income_source.split(" - ")[0], "Fallback source is labeled so users know when ACS rebuild is needed.")
 
 section_label("Metro Detail Table")
 display = affordability[affordability["metro"].isin(selected)].copy()

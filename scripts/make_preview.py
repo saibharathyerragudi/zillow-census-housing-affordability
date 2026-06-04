@@ -114,12 +114,13 @@ def main() -> None:
     ax_rank.set_xlabel("Price-to-income index", color=MUTED, fontsize=9)
 
     panel(fig, 0.045, 0.095, 0.28, 0.165)
-    fig.text(0.065, 0.215, "Metro spotlight", color=MUTED, fontsize=8, weight="bold")
-    fig.text(0.065, 0.178, "Austin, TX", color=TEXT, fontsize=20, weight="bold")
+    fig.text(0.065, 0.222, "Metro spotlight", color=MUTED, fontsize=8, weight="bold")
+    fig.text(0.065, 0.188, "Austin, TX", color=TEXT, fontsize=18, weight="bold")
     austin = summary[summary["metro"] == "Austin, TX"]
     if not austin.empty:
-        fig.text(0.065, 0.14, f"2018-2024 burden change: {fmt_pct(austin.iloc[0]['index_change_pct'])}", color=WARNING, fontsize=12, weight="bold")
-    fig.text(0.065, 0.112, "Use the Streamlit controls to compare metros and years.", color=MUTED, fontsize=9)
+        fig.text(0.065, 0.155, f"Burden change: {fmt_pct(austin.iloc[0]['index_change_pct'])}", color=WARNING, fontsize=11, weight="bold")
+    fig.text(0.065, 0.128, "Data quality", color=MUTED, fontsize=8, weight="bold")
+    fig.text(0.065, 0.106, f"{first_year}-{latest_year} annual data | {affordability['metro'].nunique():,} metros | source labeled", color=MUTED, fontsize=8)
 
     ax_scatter = fig.add_axes([0.38, 0.095, 0.575, 0.165])
     style_axis(ax_scatter)
