@@ -12,12 +12,14 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "processed" / "metro_year_affordability.csv"
 SUMMARY_PATH = ROOT / "data" / "processed" / "metro_affordability_summary.csv"
 
-ACCENT = "#25d6d2"
-WARNING = "#d94b5f"
-YELLOW = "#f0d24a"
-TEXT = "#f7f7f8"
-MUTED = "#9a9aa3"
-PANEL = "#151517"
+ACCENT = "#22c7c4"
+WARNING = "#cc5362"
+YELLOW = "#d8bd3b"
+TEXT = "#1f2937"
+MUTED = "#667085"
+PANEL = "#ffffff"
+GRID = "#e5e7eb"
+CHARCOAL = "#303236"
 
 
 st.set_page_config(page_title="Housing Affordability Index", layout="wide")
@@ -82,42 +84,58 @@ st.markdown(
     """
     <style>
       :root {
-        --bg: #0b0c0f;
-        --panel: #151517;
-        --panel-soft: #1d1d20;
-        --line: rgba(255,255,255,0.1);
-        --text: #f7f7f8;
-        --muted: #9a9aa3;
-        --accent: #25d6d2;
-        --warning: #d94b5f;
+        --bg: #f4f6f8;
+        --panel: #ffffff;
+        --panel-soft: #f8fafc;
+        --line: #d8dee8;
+        --text: #1f2937;
+        --muted: #667085;
+        --accent: #22c7c4;
+        --warning: #d85b6a;
       }
       .stApp {
-        background:
-          radial-gradient(circle at 18% 5%, rgba(37,214,210,0.18), transparent 28%),
-          radial-gradient(circle at 88% 12%, rgba(217,75,95,0.13), transparent 28%),
-          linear-gradient(180deg, #0b0c0f 0%, #07080a 100%);
+        background: var(--bg);
         color: var(--text);
       }
       [data-testid="stSidebar"] {
-        background: rgba(12,12,14,0.92);
+        background: #ffffff;
         border-right: 1px solid var(--line);
       }
       [data-testid="stSidebar"] * {
         color: var(--text);
       }
       .block-container {
-        padding-top: 2rem;
-        padding-bottom: 3rem;
-        max-width: 1500px;
+        padding-top: 2.25rem;
+        padding-bottom: 4rem;
+        max-width: 1380px;
       }
-      .hero {
+      .report-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 28px;
+        align-items: flex-start;
         border: 1px solid var(--line);
-        background:
-          linear-gradient(135deg, rgba(37,214,210,0.13), transparent 38%),
-          linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-        border-radius: 8px;
-        padding: 28px 30px;
-        margin-bottom: 18px;
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 22px 26px;
+        margin-bottom: 22px;
+        box-shadow: 0 12px 30px rgba(16,24,40,0.06);
+      }
+      .report-meta {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-width: 260px;
+      }
+      .report-meta span {
+        border: 1px solid var(--line);
+        background: var(--panel-soft);
+        border-radius: 999px;
+        padding: 7px 10px;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 750;
       }
       .eyebrow, .section-label {
         color: var(--accent);
@@ -126,30 +144,30 @@ st.markdown(
         letter-spacing: 0.15em;
         text-transform: uppercase;
       }
-      .hero h1 {
+      .report-header h1 {
         color: var(--text);
-        font-size: clamp(2.2rem, 5vw, 4.7rem);
-        line-height: 0.95;
-        margin: 10px 0 12px;
-        letter-spacing: -0.04em;
+        font-size: clamp(1.85rem, 3vw, 2.8rem);
+        line-height: 1.02;
+        margin: 8px 0 10px;
+        letter-spacing: -0.03em;
       }
-      .hero p {
+      .report-header p {
         color: var(--muted);
-        font-size: 1.05rem;
-        max-width: 940px;
+        font-size: 0.98rem;
+        max-width: 760px;
       }
       .metric-card {
-        min-height: 142px;
-        border: 1px solid rgba(255,255,255,0.12);
+        min-height: 118px;
+        border: 1px solid #2f3237;
         border-top: 3px solid var(--tone);
-        background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+        background: #303236;
         border-radius: 8px;
-        padding: 18px 18px 16px;
-        box-shadow: 0 18px 44px rgba(0,0,0,0.22);
+        padding: 17px 18px 15px;
+        box-shadow: 0 14px 26px rgba(16,24,40,0.08);
       }
       .metric-card span {
         display: block;
-        color: var(--muted);
+        color: #c4c8d0;
         font-size: 0.73rem;
         font-weight: 800;
         letter-spacing: 0.12em;
@@ -158,22 +176,22 @@ st.markdown(
       }
       .metric-card strong {
         display: block;
-        color: var(--text);
-        font-size: clamp(1.75rem, 4vw, 2.6rem);
+        color: #ffffff;
+        font-size: clamp(1.65rem, 3vw, 2.3rem);
         line-height: 1;
         margin-bottom: 12px;
       }
       .metric-card small {
-        color: rgba(247,247,248,0.66);
+        color: #d2d6de;
         font-size: 0.88rem;
         font-weight: 650;
       }
       .section-label {
-        margin: 18px 0 10px;
+        margin: 30px 0 12px;
       }
       .insight-card {
         border: 1px solid var(--line);
-        background: rgba(21,21,23,0.82);
+        background: #ffffff;
         border-radius: 8px;
         padding: 20px;
         min-height: 100%;
@@ -190,6 +208,17 @@ st.markdown(
         border: 1px solid var(--line);
         border-radius: 8px;
         overflow: hidden;
+        background: #ffffff;
+      }
+      @media (max-width: 900px) {
+        .report-header {
+          display: block;
+        }
+        .report-meta {
+          justify-content: flex-start;
+          min-width: 0;
+          margin-top: 14px;
+        }
       }
     </style>
     """,
@@ -232,18 +261,25 @@ focus_history = affordability[affordability["metro"] == focus_metro].sort_values
 focus_latest = focus_history[focus_history["year"] == latest_year].iloc[0]
 focus_summary = summary_latest[summary_latest["metro"] == focus_metro].iloc[0]
 
+income_source = affordability["income_source"].iloc[0]
 st.markdown(
-    """
-    <div class="hero">
-      <div class="eyebrow">Zillow + Census Housing Affordability Index</div>
-      <h1>Metro affordability pressure, ranked and explained.</h1>
-      <p>Interactive housing analytics dashboard tracking price-to-income movement across U.S. metros, with trend slopes, burden change, and market-level risk bands.</p>
+    f"""
+    <div class="report-header">
+      <div>
+        <div class="eyebrow">Zillow + Census Housing Affordability Index</div>
+        <h1>Housing affordability by metro</h1>
+        <p>Price-to-income index, market rankings, and income vs. home value movement across U.S. metros.</p>
+      </div>
+      <div class="report-meta">
+        <span>{first_year}-{latest_year}</span>
+        <span>{affordability['metro'].nunique():,} metros</span>
+        <span>{income_source.split(' - ')[0]}</span>
+      </div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-income_source = affordability["income_source"].iloc[0]
 if "Demo fallback" in income_source:
     st.info(
         "Local build uses a demo fallback income panel because Census API access was unavailable. "
@@ -273,19 +309,21 @@ trend = px.line(
     color="metro",
     markers=True,
     labels={"price_to_income_index": "Home value / median household income", "year": ""},
-    color_discrete_sequence=px.colors.qualitative.Set2,
+    color_discrete_sequence=["#2c7fb8", "#22a06b", "#7c5fb8", "#f08a24", "#cc5362", "#8f6d5d"],
 )
-trend.update_traces(line_width=3, marker_size=7)
+trend.update_traces(line_width=2.8, marker_size=6)
 trend.add_hrect(y0=4.5, y1=6, fillcolor=YELLOW, opacity=0.08, line_width=0)
 trend.add_hrect(y0=6, y1=max(7, filtered["price_to_income_index"].max() + 0.3), fillcolor=WARNING, opacity=0.09, line_width=0)
 trend.update_layout(
-    template="plotly_dark",
+    template="plotly_white",
     paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(255,255,255,0.02)",
-    height=430,
-    margin=dict(l=20, r=20, t=28, b=20),
+    plot_bgcolor="#ffffff",
+    height=390,
+    margin=dict(l=28, r=28, t=34, b=26),
     legend_title_text="",
     font_color=TEXT,
+    xaxis=dict(gridcolor=GRID),
+    yaxis=dict(gridcolor=GRID),
 )
 st.plotly_chart(trend, use_container_width=True)
 
@@ -298,18 +336,20 @@ with left:
         x="price_to_income_index",
         y="metro",
         orientation="h",
-        color="price_to_income_index",
-        color_continuous_scale=[[0, ACCENT], [0.6, YELLOW], [1, WARNING]],
         labels={"price_to_income_index": "Price-to-income index", "metro": ""},
     )
+    rank_colors = [WARNING if value >= 6 else CHARCOAL for value in rank["price_to_income_index"]]
+    fig_rank.update_traces(marker_color=rank_colors)
     fig_rank.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(255,255,255,0.02)",
-        height=520,
-        margin=dict(l=10, r=18, t=16, b=20),
+        plot_bgcolor="#ffffff",
+        height=460,
+        margin=dict(l=18, r=24, t=22, b=28),
         coloraxis_showscale=False,
         font_color=TEXT,
+        xaxis=dict(gridcolor=GRID),
+        yaxis=dict(gridcolor=GRID),
     )
     st.plotly_chart(fig_rank, use_container_width=True)
 
@@ -328,8 +368,8 @@ with right:
             y=focus_history["zhvi"],
             mode="lines+markers",
             name="ZHVI",
-            line=dict(color=ACCENT, width=4),
-            marker=dict(size=8),
+        line=dict(color="#2c7fb8", width=3.2),
+        marker=dict(size=7),
             yaxis="y1",
         )
     )
@@ -339,19 +379,19 @@ with right:
             y=focus_history["median_household_income"],
             mode="lines+markers",
             name="Income",
-            line=dict(color=YELLOW, width=3),
-            marker=dict(size=7),
+        line=dict(color="#22a06b", width=2.8),
+        marker=dict(size=6),
             yaxis="y2",
         )
     )
     spotlight.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(255,255,255,0.02)",
-        height=324,
-        margin=dict(l=18, r=18, t=18, b=20),
+        plot_bgcolor="#ffffff",
+        height=286,
+        margin=dict(l=24, r=24, t=24, b=28),
         legend=dict(orientation="h", y=1.08),
-        yaxis=dict(title="Home value", tickprefix="$", gridcolor="rgba(255,255,255,0.08)"),
+        yaxis=dict(title="Home value", tickprefix="$", gridcolor=GRID),
         yaxis2=dict(title="Income", overlaying="y", side="right", tickprefix="$", showgrid=False),
         font_color=TEXT,
     )
@@ -375,7 +415,7 @@ with s1:
         size="price_to_income_index",
         color="index_change_pct",
         hover_name="metro",
-        color_continuous_scale=[[0, ACCENT], [0.55, YELLOW], [1, WARNING]],
+        color_continuous_scale=[[0, "#8ab6f9"], [0.55, "#d9dce3"], [1, WARNING]],
         labels={
             "median_household_income": "Median household income",
             "zhvi": "Zillow Home Value Index",
@@ -383,12 +423,14 @@ with s1:
         },
     )
     scatter.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(255,255,255,0.02)",
-        height=430,
-        margin=dict(l=18, r=18, t=16, b=20),
+        plot_bgcolor="#ffffff",
+        height=370,
+        margin=dict(l=28, r=28, t=24, b=30),
         font_color=TEXT,
+        xaxis=dict(gridcolor=GRID),
+        yaxis=dict(gridcolor=GRID),
     )
     st.plotly_chart(scatter, use_container_width=True)
 
@@ -398,18 +440,20 @@ with s2:
         x="metros",
         y="affordability_band",
         orientation="h",
-        color="median_index",
-        color_continuous_scale=[[0, ACCENT], [0.6, YELLOW], [1, WARNING]],
         labels={"metros": "Metro count", "affordability_band": "", "median_index": "Median index"},
     )
+    band_colors = [WARNING if value >= 5.5 else "#3f434a" for value in seg_summary["median_index"]]
+    band_fig.update_traces(marker_color=band_colors)
     band_fig.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(255,255,255,0.02)",
-        height=430,
-        margin=dict(l=10, r=18, t=16, b=20),
+        plot_bgcolor="#ffffff",
+        height=370,
+        margin=dict(l=18, r=24, t=24, b=30),
         coloraxis_showscale=False,
         font_color=TEXT,
+        xaxis=dict(gridcolor=GRID),
+        yaxis=dict(gridcolor=GRID),
     )
     st.plotly_chart(band_fig, use_container_width=True)
 
