@@ -10,12 +10,14 @@ An end-to-end housing affordability analytics project using Zillow metro home va
 | Data Sources | Zillow ZHVI metro time series, Census ACS median household income |
 | Time Period | 2018-2024 |
 | Metric | `home value / median household income` |
-| Dashboard | Streamlit |
-| Analysis | Metro rankings, trend lines, affordability burden change, OLS slope estimates |
+| Dashboard | Streamlit executive dashboard |
+| Analysis | KPI cards, metro rankings, trend lines, affordability burden change, market segmentation, OLS slope estimates |
 
 ## Dashboard Preview
 
 ![Streamlit housing affordability dashboard](outputs/figures/streamlit_dashboard.png)
+
+The Streamlit dashboard includes a Power BI-style KPI strip, metro comparison trend panel, latest burden ranking, metro spotlight view, income-vs-home-value segmentation, and a filterable detail table.
 
 ## Analysis Preview
 
@@ -98,7 +100,7 @@ streamlit run app/streamlit_app.py
 ## Local Validation
 
 ```bash
-python -m unittest discover -s tests
+PYTHONPATH=src python -m unittest discover -s tests
 ```
 
 The build script downloads Zillow data directly. It attempts Census ACS API ingestion first and uses a clearly labeled demo fallback income panel only when the API is unavailable in the local environment.
